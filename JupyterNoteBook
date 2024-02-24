@@ -1,0 +1,458 @@
+## **Disease prediction using machine learning**
+
+In this data-driven journey, we will venture into the realm of disease prediction using machine learning, guided by our expert data scientist. Our dataset contains vital information regarding the diagnosis of heart disease patients. Through the power of machine learning, we aim to predict whether an individual is susceptible to heart disease, leveraging features such as chest pain type, age, sex, and more.
+
+Heart disease stands as a prominent cause of morbidity and mortality on a global scale. Predicting cardiovascular disease is a crucial area within clinical data analysis, considering its profound impact on public health. The healthcare industry harbors a vast reservoir of data, and the process of data mining transforms this extensive healthcare repository into actionable insights, facilitating informed decision-making and predictions.
+
+Our journey unfolds by training machine learning models capable of discerning the presence or absence of heart disease based on a comprehensive set of attributes. To achieve this, we draw upon the Cleveland Heart Disease dataset, sourced from the UCI repository. As we traverse this path, each line of code and model developed brings us closer to unraveling the secrets of disease prediction.
+
+Our ultimate goal is to empower healthcare professionals and individuals with data-driven insights, enhancing their ability to make early and accurate predictions regarding heart disease. Through the utilization of machine learning, we aim to contribute to the vital task of improving public health and the well-being of individuals across the world.
+
+## Module 1
+### Task 1: Importing Health Data
+
+In this task, we import health data from the 'heart_cleveland_upload.csv' file. This initial step is essential for our comprehensive analysis of factors influencing health. By loading this data, we set the stage for a deeper exploration of health-related factors and their impact on the project.
+
+### Task 2: Identifying Null Values
+
+In this task, our focus shifts to identifying and quantifying null values within our health data. The count of null values (represented as 'sumofnull' in the code) is a crucial metric. It helps us assess data completeness and quality, ensuring we are aware of any missing information. Recognizing and addressing null values is paramount for accurate and reliable analysis in our project. This meticulous examination of null values contributes to the project's overall data integrity and the generation of meaningful insights.
+
+#--- Import Pandas ---
+import pandas as pd
+#--- Read in dataset(heart_cleveland_upload.csv) ----
+df = pd.read_csv('./heart_cleveland_upload.csv')
+
+#--- Inspect data ---
+df
+
+# --- WRITE YOUR CODE FOR MODULE 1 TASK 2 ---
+sumofnull = df.isnull().sum()
+
+#--- Inspect data ---
+sumofnull
+
+### Task 3: Examining Data Types
+
+In this task, we shift our focus to examining the data types within our health data. This step involves analyzing the types of variables present in the dataset, ensuring that we have a clear understanding of the nature of the data. By executing the code and generating the 'datatype' results, we set the foundation for data interpretation and manipulation in our project. This knowledge is essential for making informed decisions and performing accurate analyses based on the specific data types present in the dataset.
+
+# --- WRITE YOUR CODE FOR MODULE 1 TASK 3 ---
+datatype = df.dtypes
+
+#--- Inspect data ---
+datatype
+
+### Task 4: Identifying Numerical and Categorical Features
+
+In this task, we classify the features within our health data into two categories: numerical and categorical. This classification is crucial for our data analysis and modeling efforts. Understanding the nature of these features is essential for the project, allowing us to employ appropriate methods to draw meaningful insights and make informed decisions.
+
+# --- WRITE YOUR CODE FOR MODULE 1 TASK 4 ---
+numeric_features = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak', 'condition']
+cat_features = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'ca',  'thal']
+#--- Inspect data ---
+numeric_features
+cat_features
+
+### Task 5: Converting Features to Categorical Data Types
+
+In this task, we transform selected features into categorical data types. Specifically, we convert 'sex,' 'cp,' 'fbs,' 'restecg,' 'exang,' 'slope,' 'ca,' and 'thal' into categorical variables. This conversion is a key step in our data preprocessing, as it ensures that these features are treated appropriately in our analysis. By executing the code and obtaining the 'dtype' results, we ensure that our data is appropriately structured for more effective data exploration and modeling in our project.
+
+# --- WRITE YOUR CODE FOR MODULE 1 TASK 5 ---
+lst = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'ca', 'thal']
+sd=df[lst].astype(object)
+df[lst]=sd
+#--- Inspect data ---
+dtype=df.dtypes
+dtype
+
+## Module 2
+### Task 1: Exploring Feature Correlations
+
+In this task, we delve into the exploration of feature correlations within our health data. By generating a heatmap using the 'sns.heatmap' function, we visualize the relationships between numerical features . This visualization is pivotal for understanding how these features interact and impact each other within the dataset. Analyzing feature correlations aids in uncovering potential insights and patterns that will be crucial for our project's data-driven conclusions and decision-making.
+
+#--- Import matplotlib and  seaborn---
+import seaborn as sns
+import matplotlib as plt
+# --- WRITE YOUR CODE FOR MODULE 2 TASK 1 ---
+corr_data = df[numeric_features].corr()
+sns.heatmap(corr_data,annot=True,cmap='Reds',linewidth=0.1)
+
+### Task 2: Visualizing Health Conditions
+
+In this task, we create a countplot to visualize the distribution of health conditions within our dataset. By generating this plot, we gain a clear overview of the prevalence of different health conditions. This visualization is essential for understanding the distribution of health outcomes in our dataset, a fundamental aspect of our project's analysis. It provides a visual representation of health conditions that will help us draw insights and make informed decisions based on the data.
+
+# --- WRITE YOUR CODE FOR MODULE 2 TASK 2 ---
+import seaborn as sns
+import matplotlib.pyplot as plt
+condition_ax = sns.countplot(x=df["condition"])
+plt.show()
+
+
+### Task 3: Analyzing Health Conditions by Gender
+
+In this task, we generate a countplot to analyze health conditions with respect to gender. By creating this plot, we gain insights into how different health conditions are distributed among males and females. This visualization is crucial for understanding gender-specific trends in health outcomes, a key aspect of our project's analysis. It provides a clear visual representation of how health conditions vary by gender, enabling us to draw meaningful conclusions and make informed decisions based on the data.
+
+# --- WRITE YOUR CODE FOR MODULE 2 TASK 3 ---
+import seaborn as sns
+import matplotlib.pyplot as plt
+sex_ax =sns.countplot(x=df['sex'],hue=df['condition'])
+
+### Task 4: Examining Chest Pain Types and Health Conditions
+
+In this task, we use a countplot to examine the relationship between different types of chest pain ('cp') and health conditions. By visualizing this data, we gain insights into how various chest pain types are associated with different health conditions. This analysis is pivotal for understanding the impact of chest pain on health outcomes, a significant aspect of our project's research. It provides a clear visual representation of these relationships, helping us to draw meaningful conclusions and make informed decisions based on the data.
+
+# --- WRITE YOUR CODE FOR MODULE 2 TASK 4 ---
+import seaborn as sns
+cp_ax = sns.countplot(x=df['cp'],hue=df['condition'])
+
+### Task 5: Investigating Fasting Blood Sugar Levels and Health Conditions
+
+In this task, we employ a countplot to investigate the relationship between fasting blood sugar levels ('fbs') and health conditions. By visualizing this data, we gain insights into how different fasting blood sugar levels are associated with various health conditions. This analysis is crucial for understanding the impact of blood sugar levels on health outcomes, a significant aspect of our project's research. The countplot provides a clear visual representation of these relationships, allowing us to draw meaningful conclusions and make informed decisions based on the data.
+
+# --- WRITE YOUR CODE FOR MODULE 2 TASK 5 ---
+import seaborn as sns
+fbs_ax = sns.countplot(x=df['fbs'],hue=df['condition'])
+
+### Task 6: Analyzing Resting Electrocardiographic Results and Health Conditions
+
+In this task, we utilize a countplot to analyze the connection between resting electrocardiographic results ('restecg') and health conditions. By visualizing this data, we gain insights into how different resting electrocardiographic outcomes are linked to various health conditions. This analysis is critical for understanding the impact of electrocardiographic results on health outcomes, a significant aspect of our project's research.
+
+# --- WRITE YOUR CODE FOR MODULE 2 TASK 6 ---
+import seaborn as sns
+restecg_ax = sns.countplot(x=df['restecg'],hue=df['condition'])
+
+### Task 7: Examining Exercise-Induced Angina and Health Conditions
+
+In this task, we employ a countplot to examine the relationship between exercise-induced angina ('exang') and health conditions. By visualizing this data, we gain insights into how the presence or absence of exercise-induced angina is associated with various health conditions. This analysis is essential for understanding the impact of exercise-induced angina on health outcomes, a significant aspect of our project's research. The countplot provides a clear visual representation of these relationships, enabling us to draw meaningful conclusions and make informed decisions based on the data.
+
+# --- WRITE YOUR CODE FOR MODULE 2 TASK 7 ---
+import seaborn as sns
+exang_ax = sns.countplot(x=df['exang'],hue=df['condition'])
+
+### Task 8: Investigating the Slope of the ST Segment and Health Conditions
+
+In this task, we use a countplot to investigate the relationship between the slope of the ST segment ('slope') and health conditions. By visualizing this data, we gain insights into how different ST segment slopes are associated with various health conditions. This analysis is crucial for understanding the impact of the ST segment's slope on health outcomes, a significant aspect of our project's research. The countplot provides a clear visual representation of these relationships, allowing us to draw meaningful conclusions and make informed decisions based on the data.
+
+# --- WRITE YOUR CODE FOR MODULE 2 TASK 8 ---
+import seaborn as sns
+slope_ax = sns.countplot(x=df['slope'],hue=df['condition'])
+
+### Task 9: Analyzing the Number of Major Vessels Colored by Fluoroscopy and Health Conditions
+
+In this task, we employ a countplot to analyze the relationship between the number of major vessels colored by fluoroscopy ('ca') and health conditions. By visualizing this data, we gain insights into how the number of colored vessels is associated with various health conditions. This analysis is critical for understanding the impact of major vessel involvement on health outcomes, a significant aspect of our project's research. The countplot provides a clear visual representation of these relationships, enabling us to draw meaningful conclusions and make informed decisions based on the data.
+
+# --- WRITE YOUR CODE FOR MODULE 2 TASK 9 ---
+import seaborn as sns
+
+ca_ax = sns.countplot(x=df['ca'],hue=df['condition'])
+
+### Task 10: Examining Thalassemia and Health Conditions
+
+In this task, we utilize a countplot to examine the relationship between thalassemia ('thal') and health conditions. By visualizing this data, we gain insights into how different thalassemia categories are associated with various health conditions. This analysis is essential for understanding the impact of thalassemia on health outcomes, a significant aspect of our project's research. The countplot provides a clear visual representation of these relationships, aiding us in drawing meaningful conclusions and making informed decisions based on the data.
+
+# --- WRITE YOUR CODE FOR MODULE 2 TASK 10 ---
+import seaborn as sns
+
+thal_ax = sns.countplot(x=df['thal'],hue=df['condition'])
+
+## Module 3
+### Task 1:  Visualizing Age Distribution
+
+In this task, we create a histogram to visualize the distribution of age in our dataset. The histogram is constructed using the 'age' column from the dataset and is presented with 20 bins for better visualization. This plot helps us gain insights into the distribution of ages within the dataset and is a critical aspect of our project's analysis to understand the age demographics of the individuals in our data.
+
+# --- WRITE YOUR CODE FOR MODULE 3 TASK 1 ---
+import matplotlib.pyplot as plt
+age_col = df['age']
+plt.figure(figsize=(10,6))
+plt.hist(age_col,bins=20,color='skyblue',alpha=0.7)
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.title('Age Distribution')
+plt.show()
+
+
+### Task 2: Visualizing Resting Blood Pressure Distribution
+
+In this task, we create a histogram to visualize the distribution of resting blood pressure ('trestbps') in our dataset. The histogram is constructed using the 'trestbps' column from the dataset and is presented with 20 bins for better visualization. This plot helps us gain insights into the distribution of resting blood pressure levels within the dataset and is an important aspect of our project's analysis to understand the distribution of this health-related feature.
+
+# --- WRITE YOUR CODE FOR MODULE 3 TASK 2 ---
+import matplotlib.pyplot as plt
+trestbps_col = df['trestbps']
+plt.figure(figsize=(10,6))
+plt.hist(trestbps_col,bins=20,color='lightcoral',alpha=0.7)
+plt.xlabel('trestbps')
+plt.ylabel('Frequency')
+plt.title('trestbps Distribution')
+plt.show()
+
+### Task 3: Visualizing Cholesterol Distribution
+
+In this task, we create a histogram to visualize the distribution of cholesterol levels ('chol') in our dataset. The histogram is constructed using the 'chol' column from the dataset and is presented with 20 bins for better visualization. This plot helps us gain insights into the distribution of cholesterol levels within the dataset, which is a critical aspect of our project's analysis to understand the distribution of this health-related feature.
+
+# --- WRITE YOUR CODE FOR MODULE 3 TASK 3 ---
+chol_col = df['chol']
+plt.figure(figsize=(10,6))
+plt.hist(chol_col,bins=20,color='lightgreen',alpha=0.7)
+plt.xlabel("Cholestrol(chol)")
+plt.ylabel('Frequency')
+plt.title("Cholestrol Distribution")
+plt.show()
+
+### Task 4: Visualizing Maximum Heart Rate Distribution
+
+In this task, we create a histogram to visualize the distribution of maximum heart rate ('thalach') in our dataset. The histogram is constructed using the 'thalach' column from the dataset and is presented with 20 bins for better visualization. This plot helps us gain insights into the distribution of maximum heart rate levels within the dataset, which is a critical aspect of our project's analysis to understand the distribution of this health-related feature.
+
+# --- WRITE YOUR CODE FOR MODULE 3 TASK 4 ---
+thalach_col = df['thalach']
+plt.figure(figsize=(10,6))
+plt.hist(thalach_col,bins=20,color='lightblue',alpha=0.7)
+plt.xlabel("Maximum Heart Rate (thalach)")
+plt.ylabel('Frequency')
+plt.title('Maximum Heart Rate Distribution')
+plt.show()
+
+### Task 5: Visualizing ST Depression Distribution
+
+In this task, we create a histogram to visualize the distribution of ST depression ('oldpeak') in our dataset. The histogram is constructed using the 'oldpeak' column from the dataset and is presented with 20 bins for better visualization. This plot helps us gain insights into the distribution of ST depression levels within the dataset, which is a critical aspect of our project's analysis to understand the distribution of this health-related feature.
+
+# --- WRITE YOUR CODE FOR MODULE 3 TASK 5 ---
+oldpeak_col = df['oldpeak']
+plt.figure(figsize=(10,6))
+plt.hist(oldpeak_col,bins=20,color='lightblue',alpha=0.7)
+plt.xlabel("ST depression")
+plt.ylabel('Frequency')
+plt.title('Distribution of ST depression')
+plt.show()
+
+### Task 6: Visualizing Chest Pain Types, Age, and Health Conditions
+
+In this task, we use a violin plot to visualize the relationship between different chest pain types ('cp'), age, and health conditions. By generating this plot, we gain insights into how chest pain types are distributed across different age groups and their association with health conditions. This visualization is essential for understanding how chest pain and age impact health outcomes, a significant aspect of our project's analysis. The violin plot provides a clear representation of these relationships, allowing us to draw meaningful conclusions and make informed decisions based on the data.
+
+# --- WRITE YOUR CODE FOR MODULE 3 TASK 6 ---
+import seaborn as sns
+violinplt = sns.catplot(x='cp',y='age',hue='condition',data=df,kind='violin',palette='muted')
+
+
+### Task 7: Analyzing Fasting Blood Sugar Levels and Health Conditions
+
+In this task, we use a countplot to analyze the relationship between fasting blood sugar levels ('fbs') and health conditions. By generating this plot, we gain insights into how different fasting blood sugar levels are associated with various health conditions. This analysis is crucial for understanding how fasting blood sugar impacts health outcomes, a significant aspect of our project's research. The countplot provides a clear visual representation of these relationships, enabling us to draw meaningful conclusions and make informed decisions based on the data.
+
+# --- WRITE YOUR CODE FOR MODULE 3 TASK 7 ---
+import seaborn as sns
+countplt = sns.catplot(x='fbs',hue='condition',kind='count',data=df,alpha=0.85)
+
+## Module 4
+### Task 1: Encoding Categorical Features
+
+In this task, we encode categorical features within our dataset, specifically 'cp,' 'thal,' and 'slope,' using one-hot encoding. By executing this code, we transform these categorical variables into a numerical format, allowing us to incorporate them into our analysis effectively. This encoding is vital for our project, as it enables us to work with categorical data and gain insights into how these features influence health conditions and outcomes. The resulting 'df_encoded' dataset is now prepared for further analysis and model building.
+
+# --- WRITE YOUR CODE FOR MODULE 4 TASK 1 ---
+categorical_cols=['cp','thal','slope']
+for i in categorical_cols:
+    df[i]=df[i].astype('int')
+    
+df_encoded =pd.get_dummies(df,columns=categorical_cols,prefix_sep='_',dtype=int)
+
+df_encoded=df_encoded.astype(int)
+#--- Inspect data ---
+df_encoded.dtypes
+
+### Task 2: Preparing Features and Target Variable
+
+In this task, we prepare the features and the target variable for our analysis. We create the variable 'x' by excluding the 'condition' column, which serves as our feature set. The 'y' variable is defined as the 'condition' column, representing our target variable. This separation is fundamental for our project as it sets the stage for further data analysis, modeling, and understanding the relationship between the features and the health condition outcomes in our dataset.
+
+# --- WRITE YOUR CODE FOR MODULE 4 TASK 2 ---
+x = df_encoded.drop(columns=['condition'],axis=1)
+
+y = df['condition']
+
+#--- Inspect data ---
+x
+y
+
+### Task 3: Scaling Features
+
+In this task, we use the MinMaxScaler from the sklearn library to scale the feature set 'x.' Scaling is crucial for ensuring that all the features are on a similar scale, preventing any feature from dominating the analysis due to its magnitude. By applying the MinMaxScaler, we transform the features to a common range, which is vital for the accuracy and effectiveness of our analysis and modeling in our project.
+
+#--- Import MinMaxScaler from sklearn.preprocessing ---
+from sklearn.preprocessing import MinMaxScaler
+# --- WRITE YOUR CODE FOR MODULE 4 TASK 3 ---
+#x = 
+x=MinMaxScaler().fit_transform(x)
+
+#--- Inspect data ---
+x
+
+### Task 4: Splitting the Data into Training and Testing Sets
+
+In this task, we split our dataset into training and testing sets using the train_test_split function from the sklearn library. The training set, 'X_train' and 'Y_train,' is designed to train our predictive models, while the testing set, 'X_test' and 'Y_test,' is reserved for evaluating the model's performance. By performing this data split, we ensure that our models are trained and tested on different data subsets, which is essential for assessing their accuracy and generalization to new data in our project.
+
+#--- Import train_test_split ---
+# --- WRITE YOUR CODE FOR MODULE 4 TASK 4 ---
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test  = train_test_split(x,y,train_size=0.8,test_size=0.2,random_state=4)
+
+
+#--- Inspect data ---
+X_train
+X_test
+Y_train
+Y_test
+
+## Module 5
+### Task 1: Building and Evaluating Logistic Regression Model
+
+In this task, we build a logistic regression model for our project. We use the sklearn library to create the 'lr_model' and train it using the training data, 'X_train' and 'Y_train.' Additionally, we assess the model's performance through cross-validation, with 10 folds, to estimate its accuracy. The 'lr_mean_score' represents the mean accuracy across the folds. Evaluating the logistic regression model is essential for understanding its predictive capabilities in our project and drawing meaningful conclusions based on its performance.
+
+#--- Import LogisticRegression ---
+from sklearn.linear_model import LogisticRegression
+#--- Import cross_val_score from sklearn.model_selection ---
+from sklearn.model_selection import cross_val_score
+# --- WRITE YOUR CODE FOR MODULE 5 TASK 1 ---
+lr_model=LogisticRegression()
+lr_model.fit(X_train,Y_train)
+lr_cv_results=cross_val_score(lr_model,X_train,Y_train,cv=10)
+lr_mean_score  = round(lr_cv_results.mean(),4)
+
+#--- Inspect data ---
+lr_mean_score
+
+### Task 2: Building and Evaluating Linear Discriminant Analysis Model
+
+In this task, we construct a Linear Discriminant Analysis (LDA) model for our project using the sklearn library. We create the 'ldr_model' and train it with the training data, 'X_train' and 'Y_train.' Subsequently, we assess the model's performance through cross-validation with 10 folds, calculating the mean accuracy. The 'ldr_mean_score' represents this mean accuracy. Evaluating the LDA model is crucial for understanding its classification capabilities and is vital for our project's analysis and decision-making based on its performance.
+
+#--- Import LinearDiscriminantAnalysis ---
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
+# --- WRITE YOUR CODE FOR MODULE 5 TASK 2 ---
+ldr_model=LinearDiscriminantAnalysis()
+ldr_model.fit(X_train,Y_train)
+ldr_cv_results=cross_val_score(ldr_model,X_train,Y_train,cv=10)
+ldr_mean_score  = round(ldr_cv_results.mean(),4)
+
+#--- Inspect data ---
+ldr_mean_score
+
+### Task 3: Building and Evaluating K-Nearest Neighbors (KNN) Model
+
+In this task, we construct a K-Nearest Neighbors (KNN) model for our project using the sklearn library. We create the 'knn_model' and train it with the training data, 'X_train' and 'Y_train.' Subsequently, we assess the model's performance through cross-validation with 10 folds, calculating the mean accuracy. The 'knn_mean_score' represents this mean accuracy. Evaluating the KNN model is crucial for understanding its classification capabilities, which is essential for our project's analysis and decision-making based on its performance.
+
+#--- Import KNeighborsClassifier ---
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import cross_val_score
+
+# --- WRITE YOUR CODE FOR MODULE 5 TASK 3 ---
+knn_model=KNeighborsClassifier()
+knn_model.fit(X_train,Y_train)
+knn_cv_results=cross_val_score(knn_model,X_train,Y_train,cv=10)
+knn_mean_score  = round(knn_cv_results.mean(),4)
+
+#--- Inspect data ---
+knn_mean_score
+
+### Task 4: Building and Evaluating Decision Tree Classifier Model
+
+In this task, we build a Decision Tree Classifier model for our project using the sklearn library. We create the 'dt_model' and train it with the training data, 'X_train' and 'Y_train.' Subsequently, we assess the model's performance through cross-validation with 10 folds, calculating the mean accuracy. The 'dt_mean_score' represents this mean accuracy. Evaluating the Decision Tree Classifier model is crucial for understanding its classification capabilities, which is essential for our project's analysis and decision-making based on its performance.
+
+#--- Import DecisionTreeClassifier ---
+from sklearn.tree import DecisionTreeClassifier
+dt_model=DecisionTreeClassifier()
+# --- WRITE YOUR CODE FOR MODULE 5 TASK 4 ---
+dt_model.fit(X_train,Y_train)
+
+#dt_mean_score  = ...
+dt_cv_results=cross_val_score(dt_model,X_train,Y_train,cv=10)
+dt_mean_score  = round(dt_cv_results.mean(),4)
+#--- Inspect data ---
+dt_mean_score
+
+### Task 5: Building and Evaluating Gaussian Naive Bayes Model
+
+In this task, we construct a Gaussian Naive Bayes model for our project using the sklearn library. We create the 'gnb_model' and train it with the training data, 'X_train' and 'Y_train.' Subsequently, we assess the model's performance through cross-validation with 10 folds, calculating the mean accuracy. The 'gnb_mean_score' represents this mean accuracy. Evaluating the Gaussian Naive Bayes model is crucial for understanding its classification capabilities, which is essential for our project's analysis and decision-making based on its performance.
+
+#--- Import GaussianNB ---
+from sklearn.naive_bayes import GaussianNB
+# --- WRITE YOUR CODE FOR MODULE 5 TASK 5 ---
+gnb_model=GaussianNB()
+gnb_model.fit(X_train,Y_train)
+gnb_cv_results=cross_val_score(gnb_model,X_train,Y_train,cv=10)
+
+gnb_mean_score  = round(gnb_cv_results.mean(),4)
+
+#--- Inspect data ---
+gnb_mean_score
+
+### Task 6: Building and Evaluating Random Forest Classifier Model
+
+In this task, we construct a Random Forest Classifier model for our project using the sklearn library. We create the 'rf_model' with 100 trees and a maximum of 3 features per split. The model is trained using the training data, 'X_train' and 'Y_train.' Subsequently, we assess the model's performance through cross-validation with 10 folds, calculating the mean accuracy. The 'rf_mean_score' represents this mean accuracy. Evaluating the Random Forest Classifier model is crucial for understanding its classification capabilities, which is essential for our project's analysis and decision-making based on its performance.
+
+#--- Import RandomForestClassifier ---
+from sklearn.ensemble import RandomForestClassifier
+# --- WRITE YOUR CODE FOR MODULE 5 TASK 6 ---
+num_trees=100
+max_features=3
+rf_model=RandomForestClassifier(n_estimators=num_trees,max_features=max_features)
+rf_model.fit(X_train,Y_train)
+rf_cv_results=cross_val_score(rf_model,X_train,Y_train,cv=10)
+
+rf_mean_score  = round(rf_cv_results.mean(),4)
+
+
+#--- Inspect data ---
+rf_mean_score
+
+### Task 7: Building and Evaluating Support Vector Classifier (SVC) Model
+
+In this task, we construct a Support Vector Classifier (SVC) model for our project using the sklearn library. We create the 'sv_model' and train it with the training data, 'X_train' and 'Y_train.' Subsequently, we assess the model's performance through cross-validation with 10 folds, calculating the mean accuracy. The 'sv_mean_score' represents this mean accuracy. Evaluating the Support Vector Classifier model is crucial for understanding its classification capabilities, which is essential for our project's analysis and decision-making based on its performance.
+
+#--- Import SVC ---
+from sklearn.svm import SVC
+# --- WRITE YOUR CODE FOR MODULE 5 TASK 7 ---
+sv_model=SVC()
+sv_model.fit(X_train,Y_train)
+sv_cv_results=cross_val_score(sv_model,X_train,Y_train,cv=10)
+
+sv_mean_score  = round(sv_cv_results.mean(),4)
+
+#--- Inspect data ---
+sv_mean_score
+
+### Task 8: Evaluating Model Performance
+
+In this task, we evaluate the performance of the Gaussian Naive Bayes model on the testing data. We use the sklearn library to calculate accuracy, create a confusion matrix, and generate a classification report. These metrics help us understand how well the model performs in classifying health conditions based on the features. Evaluating the model's performance is essential for assessing its predictive capabilities and making informed decisions in our project.
+
+#--- Import accuracy_score, confusion_matrix, classification_report from sklearn.metrics ---
+
+from sklearn.metrics import accuracy_score,confusion_matrix,classification_report
+# --- WRITE YOUR CODE FOR MODULE 5 TASK 8 ---
+y_pred=gnb_model.predict(X_test)
+
+
+accuracy= accuracy_score(Y_test,y_pred)
+
+cm= confusion_matrix(Y_test,y_pred)
+
+cr=classification_report(Y_test,y_pred)
+
+#--- Inspect data ---
+accuracy
+cm
+cr
+
+
+### Task 9: Making Predictions with Gaussian Naive Bayes Model
+
+In this task, we utilize the trained Gaussian Naive Bayes model to make predictions on new data. We provide a set of features in the 'data' variable and use the 'gnb_model' to predict the corresponding health condition outcome. This prediction helps us understand how the model classifies a new instance based on the provided features, which is a crucial aspect of our project's analysis and decision-making.
+
+data = [[0.254, 1, 0.487, 0.362,  ## age_scaled, sex, trestbps_scaled, chol
+             1, 0.5, 0.641, 1,  ## fbs, restecg_scaled, thalach_scaled, exang
+             0.672, 0.863, 0, 0,  ## oldpeak_scaled, ca_scaled, cp_0, cp_1
+             0, 1, 0, 0,  ## cp_2, cp_3, thal_0, thal_1
+             0, 1, 0, 1]]  ## thal_2, thal_3, slope_0, slope_1, slope_2
+
+# --- WRITE YOUR CODE FOR MODULE 5 TASK 9 ---
+#You need to predict the result by passing the sample data available here to your model to make a prediction.
+prediction =gnb_model.predict(data)
+
+#--- Inspect data ---
+prediction
+
